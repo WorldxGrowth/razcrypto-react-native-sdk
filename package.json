@@ -1,0 +1,42 @@
+{
+  "name": "@razcrypto/react-native",
+  "version": "1.0.0",
+  "description": "Open RazCrypto Gateway crypto checkout (QR, wallet links, live status) in a React Native app with a publishable key.",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "razcrypto",
+    "crypto",
+    "payments",
+    "checkout",
+    "react-native",
+    "usdt"
+  ],
+  "peerDependencies": {
+    "react": ">=18",
+    "react-native": ">=0.72",
+    "react-native-webview": ">=13"
+  },
+  "devDependencies": {
+    "@types/react": "19.1",
+    "react": "19.1",
+    "react-native": "^0.80.3",
+    "react-native-webview": "^14.0.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  },
+  "type": "module",
+  "react-native": "dist/index.js"
+}
