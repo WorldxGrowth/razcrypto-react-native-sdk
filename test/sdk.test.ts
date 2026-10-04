@@ -24,6 +24,7 @@ describe('options', () => {
     expect(() => validateOptions({ key: `sk_live_${'a'.repeat(24)}`, paymentId: pay })).toThrow(/secret key/);
     expect(() => validateOptions({ key: pk, paymentId: 'nope' })).toThrow(/pay_/);
     expect(() => validateOptions({ key: pk, paymentId: pay, payHost: 'http://evil.example' })).toThrow(/https/);
+    expect(() => validateOptions({ key: pk, paymentId: pay, payHost: '' })).toThrow(/payHost/);
     expect(() => validateOptions({ checkoutUrl: 'https://pay.example/whatever' })).toThrow(/checkoutUrl/);
   });
 });

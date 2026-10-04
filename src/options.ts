@@ -1,9 +1,8 @@
 /** What to open: publishable key + payment id (created on your server), or the payment's `checkout_url`. */
 export type CheckoutOptions =
-  | { key: string; paymentId: string; payHost?: string; locale?: 'en' | 'hi' }
+  | { key: string; paymentId: string; /** Your gateway URL (required; or use `checkoutUrl`, which needs no host). */ payHost: string; locale?: 'en' | 'hi' }
   | { checkoutUrl: string; locale?: 'en' | 'hi' };
 
-export const DEFAULT_PAY_HOST = 'https://pay.razcryptogateway.com';
 const PAY_ID = /^pay_[0-9A-Za-z]{20}$/;
 const PK = /^pk_(live|test)_[0-9A-Za-z]{16,}$/;
 const LOCAL = new Set(['localhost', '127.0.0.1', '10.0.2.2']);
@@ -55,7 +54,8 @@ export function validateOptions(o: CheckoutOptions): void {
   if (o.key.startsWith('sk_')) throw new RazCryptoError('invalid_key', 'Never use a secret key in an app. Pass your publishable key (pk_…).');
   if (!PK.test(o.key)) throw new RazCryptoError('invalid_key', 'key must be a publishable key (pk_live_… or pk_test_…)');
   if (!PAY_ID.test(o.paymentId)) throw new RazCryptoError('invalid_payment_id', 'paymentId must look like pay_…');
-  if (!safe(o.payHost ?? DEFAULT_PAY_HOST)) throw new RazCryptoError('invalid_pay_host', 'payHost must be https');
+  if (!o.payHost) throw new RazCryptoError('pay_host_missing', 'Set payHost (your gateway URL) — or pass checkoutUrl.');
+  if (!safe(o.payHost)) throw new RazCryptoError('invalid_pay_host', 'payHost must be https');
 }
 
 export const originOf = (url: string): string => parseUrl(url)?.origin ?? '';
@@ -72,8 +72,8 @@ export function embedUrl(o: CheckoutOptions): string {
     const p = parseUrl(o.checkoutUrl)!;
     return `${p.origin}/embed/${p.segments.at(-1)}?${qs({ t: p.query.t ?? '', locale: o.locale })}`;
   }
-  return `${originOf(o.payHost ?? DEFAULT_PAY_HOST)}/embed/${o.paymentId}?${qs({ key: o.key, locale: o.locale })}`;
+  return `${originOf(o.payHost)}/embed/${o.paymentId}?${qs({ key: o.key, locale: o.locale })}`;
 }
 
 /** Origin the checkout is served from; only this origin may talk to the app. */
-export const payOrigin = (o: CheckoutOptions): string => originOf('checkoutUrl' in o ? o.checkoutUrl : (o.payHost ?? DEFAULT_PAY_HOST));
+export const payOrigin = (o: CheckoutOptions): string => originOf('checkoutUrl' in o ? o.checkoutUrl : o.payHost);

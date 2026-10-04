@@ -29,7 +29,7 @@ function PayButton({ paymentId }: { paymentId: string }) {
       <Button
         title="Pay with crypto"
         onPress={async () => {
-          const r = await open({ key: 'pk_live_…', paymentId }); // or { checkoutUrl }
+          const r = await open({ key: 'pk_live_…', paymentId, payHost: 'https://pay.example.com' }); // or { checkoutUrl } (no host needed)
           if (r.status === 'success') await api.verify(r.paymentId, r.signature); // then wait for payment.paid
           if (r.status === 'failed') Alert.alert(r.message);
         }}
