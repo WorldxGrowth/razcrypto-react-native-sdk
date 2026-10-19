@@ -38,5 +38,16 @@
     "vitest": "^3.2.7"
   },
   "type": "module",
-  "react-native": "dist/index.js"
+  "react-native": "dist/index.js",
+  "homepage": "https://razcryptogateway.com/docs/sdks",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WorldxGrowth/razcrypto-react-native-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WorldxGrowth/razcrypto-react-native-sdk/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }
